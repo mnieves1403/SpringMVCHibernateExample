@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +39,12 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void delete(int id) {
 		Customer customer = (Customer)getSession().get(Customer.class, id);
 		getSession().delete(customer);
+	}
+	
+	public Customer findCustomerByName(String name) {
+		Criteria criteria = getSession().createCriteria(Customer.class);
+		Customer customer = (Customer)criteria.add(Restrictions.like("firstname", name)).uniqueResult();
+		return customer;
 	}
 
 }
